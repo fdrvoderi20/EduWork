@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "connectionInfo": "App registration: EduWork Test_FD, Tenant: EduWork Test (eduworktest.onmicrosoft.com - Microsoft Entra ID)",
+      "secretStore": "LocalSecretsFile",
+      "resourceId": null,
+      "type": "identityapp.default",
+      "connectionId": "AzureAD:ClientSecret"
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "",
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:.",
+      "dynamicId": null
+    }
+  }
+}
