@@ -49,4 +49,4 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 }
 
-    app.Run();
+app.Run();
