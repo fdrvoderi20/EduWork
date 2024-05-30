@@ -1,9 +1,12 @@
 ﻿using EduWork.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
-using Microsoft.Identity.Web.Resource;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using User = EduWork.Entities.User;
 
 namespace EduWork.Controllers
@@ -24,16 +27,34 @@ namespace EduWork.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<object>>> GetUsers()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.OID,
+                    u.Active,
+                    u.RoleId
+                })
+                .ToListAsync();
+
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<ActionResult<object>> GetUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users
+                .Where(u => u.UserId == id)
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.OID,
+                    u.Active,
+                    u.RoleId
+                })
+                .FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -44,12 +65,20 @@ namespace EduWork.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<object>> CreateUser(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+            var createdUser = new
+            {
+                user.UserId,
+                user.OID,
+                user.Active,
+                user.RoleId
+            };
+
+            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, createdUser);
         }
 
         [HttpPut("{id}")]
@@ -65,14 +94,12 @@ namespace EduWork.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
+            } catch (DbUpdateConcurrencyException)
             {
                 if (!UserExists(id))
                 {
                     return NotFound();
-                }
-                else
+                } else
                 {
                     throw;
                 }

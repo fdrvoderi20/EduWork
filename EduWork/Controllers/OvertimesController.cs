@@ -1,8 +1,11 @@
 ﻿using EduWork.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web.Resource;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EduWork.Controllers
 {
@@ -20,16 +23,34 @@ namespace EduWork.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Overtime>>> GetOvertimes()
+        public async Task<ActionResult<IEnumerable<object>>> GetOvertimes()
         {
-            var overtimes = await _context.Overtimes.ToListAsync();
+            var overtimes = await _context.Overtimes
+                .Select(o => new
+                {
+                    o.OvertimeId,
+                    o.Date,
+                    o.Hours,
+                    o.UserId
+                })
+                .ToListAsync();
+
             return Ok(overtimes);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Overtime>> GetOvertime(Guid id)
+        public async Task<ActionResult<object>> GetOvertime(Guid id)
         {
-            var overtime = await _context.Overtimes.FindAsync(id);
+            var overtime = await _context.Overtimes
+                .Where(o => o.OvertimeId == id)
+                .Select(o => new
+                {
+                    o.OvertimeId,
+                    o.Date,
+                    o.Hours,
+                    o.UserId
+                })
+                .FirstOrDefaultAsync();
 
             if (overtime == null)
             {
@@ -40,12 +61,20 @@ namespace EduWork.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Overtime>> CreateOvertime(Overtime overtime)
+        public async Task<ActionResult<object>> CreateOvertime(Overtime overtime)
         {
             _context.Overtimes.Add(overtime);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetOvertime), new { id = overtime.OvertimeId }, overtime);
+            var createdOvertime = new
+            {
+                overtime.OvertimeId,
+                overtime.Date,
+                overtime.Hours,
+                overtime.UserId
+            };
+
+            return CreatedAtAction(nameof(GetOvertime), new { id = overtime.OvertimeId }, createdOvertime);
         }
 
         [HttpPut("{id}")]

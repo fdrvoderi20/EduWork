@@ -1,8 +1,11 @@
 ﻿using EduWork.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web.Resource;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EduWork.Controllers
 {
@@ -20,16 +23,34 @@ namespace EduWork.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+        public async Task<ActionResult<IEnumerable<object>>> GetProjects()
         {
-            var projects = await _context.Projects.ToListAsync();
+            var projects = await _context.Projects
+                .Select(p => new
+                {
+                    p.ProjectId,
+                    p.ProjectName,
+                    p.Description,
+                    p.ProjectTypeId
+                })
+                .ToListAsync();
+
             return Ok(projects);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Project>> GetProject(Guid id)
+        public async Task<ActionResult<object>> GetProject(Guid id)
         {
-            var project = await _context.Projects.FindAsync(id);
+            var project = await _context.Projects
+                .Where(p => p.ProjectId == id)
+                .Select(p => new
+                {
+                    p.ProjectId,
+                    p.ProjectName,
+                    p.Description,
+                    p.ProjectTypeId
+                })
+                .FirstOrDefaultAsync();
 
             if (project == null)
             {
@@ -40,12 +61,20 @@ namespace EduWork.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Project>> CreateProject(Project project)
+        public async Task<ActionResult<object>> CreateProject(Project project)
         {
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProject), new { id = project.ProjectId }, project);
+            var createdProject = new
+            {
+                project.ProjectId,
+                project.ProjectName,
+                project.Description,
+                project.ProjectTypeId
+            };
+
+            return CreatedAtAction(nameof(GetProject), new { id = project.ProjectId }, createdProject);
         }
 
         [HttpPut("{id}")]

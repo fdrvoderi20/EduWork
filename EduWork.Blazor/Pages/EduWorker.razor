@@ -3,16 +3,82 @@
 
 <PageTitle>EduWorker</PageTitle>
 
-<h3>EduWorker</h3>
+<h1>EduWorker</h1>
+<hr />
 
-<p>Hello World</p>
+<section>
+    <h3>Overtime</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>OvertimeId</th>
+                <th>Date</th>
+                <th>Hours</th>
+                <th>UserId</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>5bfe756f-09d6-480b-b99c-0b94bba92b74</td>
+                <td>2024-05-30 00:00:00.0000000</td>
+                <td>8</td>
+                <td>295882b2-7dc3-4bc8-86da-b2a8cf79aa63</td>
+            </tr>
+            <tr>
+                <td>0259b18d-480c-42d2-8852-6a4ebdff57ff</td>
+                <td>2024-05-29 00:00:00.0000000</td>
+                <td>10</td>
+                <td>17398085-ee57-4bd6-b7e0-4e450efa3e07</td>
+            </tr>
+            <tr>
+                <td>ab5cfcf2-da8a-44a5-9f51-cd7e32e1cf42</td>
+                <td>2024-05-28 00:00:00.0000000</td>
+                <td>9</td>
+                <td>295882b2-7dc3-4bc8-86da-b2a8cf79aa63</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<hr />
+
+<section>
+    <h3>Users</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>UserId</th>
+                <th>OID</th>
+                <th>Active</th>
+                <th>RoleId</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>17398085-ee57-4bd6-b7e0-4e450efa3e07</td>
+                <td>1</td>
+                <td>1</td>
+                <td>80a1adde-9aa5-4ad4-b994-13ed500c5fa3</td>
+            </tr>
+            <tr>
+                <td>295882b2-7dc3-4bc8-86da-b2a8cf79aa63</td>
+                <td>2</td>
+                <td>1</td>
+                <td>6ddc94d9-dd47-443c-875a-e78ac76f5b43</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
 
 
 @code {
-    private List<User> users;
+    /*private List<User> users;
 
     protected override async Task OnInitializedAsync()
     {
         //users = await _db.GetUser();
     }
+    
+    */
 }

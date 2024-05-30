@@ -1,0 +1,61 @@
+﻿@page "/projects"
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<h1>Projects</h1>
+<hr />
+
+<section>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ProjectId</th>
+                <th>ProjectName</th>
+                <th>Description</th>
+                <th>ProjectTypeId</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>50b4385a-f18e-4bf3-b876-878ef30fa241</td>
+                <td>Project Name 1</td>
+                <td>Project Description 1</td>
+                <td>a026a141-609e-41e5-aa31-be637f96df11</td>
+            </tr>
+            <tr>
+                <td>ea3757b3-b091-4a12-a13d-f384991bab3f</td>
+                <td>Project Name 2</td>
+                <td>Project Description 2</td>
+                <td>a026a141-609e-41e5-aa31-be637f96df11</td>
+            </tr>
+            <tr>
+                <td>26d18bab-d06d-41fd-a64d-887763483b8e</td>
+                <td>Project Name 3</td>
+                <td>Project Description 3</td>
+                <td>a026a141-609e-41e5-aa31-be637f96df11</td>
+            </tr>
+            <tr>
+                <td>ed14337d-e485-4050-8ee7-38fb66afa1bb</td>
+                <td>Project Name 4</td>
+                <td>Project Description 4</td>
+                <td>a026a141-609e-41e5-aa31-be637f96df11</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<hr />
+
+<div class="chart-container">
+    <canvas id="projectPieChart"></canvas>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("createProjectPieChart");
+        }
+    }
+}
