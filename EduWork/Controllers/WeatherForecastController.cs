@@ -5,10 +5,8 @@ using Microsoft.Graph;
 
 namespace EduWork.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
-    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly GraphServiceClient _graphServiceClient;

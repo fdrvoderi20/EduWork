@@ -8,10 +8,8 @@ using User = EduWork.Entities.User;
 
 namespace EduWork.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
-    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

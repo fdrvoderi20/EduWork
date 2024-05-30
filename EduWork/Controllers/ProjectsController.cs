@@ -6,10 +6,8 @@ using Microsoft.Identity.Web.Resource;
 
 namespace EduWork.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
-    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class ProjectsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

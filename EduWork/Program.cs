@@ -3,6 +3,8 @@ using EduWork.WebAPI.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +28,15 @@ builder.Services.AddServices(builder.Configuration);
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
 //        sqlOptions => sqlOptions.MigrationsAssembly("EduWork.Data")));
 
+builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        });
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

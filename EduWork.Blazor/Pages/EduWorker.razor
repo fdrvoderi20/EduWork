@@ -1,8 +1,18 @@
 ﻿@page "/eduworker"
 @inject HttpClient Http
 
+<PageTitle>EduWorker</PageTitle>
+
 <h3>EduWorker</h3>
 
-@code {
+<p>Hello World</p>
 
+
+@code {
+    private List<User> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //users = await _db.GetUser();
+    }
 }
