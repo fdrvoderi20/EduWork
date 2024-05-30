@@ -9,10 +9,6 @@ namespace EduWork.Entities
         [Key]
         public Guid WorkOnProjectId { get; set; }
 
-        [ForeignKey("WorkDay")]
-        public Guid WorkId { get; set; } 
-        public virtual WorkDay? WorkDay { get; set; }
-
         public int WorkHours { get; set; }
 
         [StringLength(255)]
